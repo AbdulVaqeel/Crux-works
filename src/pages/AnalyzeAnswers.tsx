@@ -238,132 +238,38 @@ const radarData = [
   { subject: "Reliability", company: 90, industry: 87 },
 ];
 
-/* ==================== TYPES ==================== */
-interface Question {
-  id: string;
-  title: string;
-  type: "nps" | "multiple-choice" | "csat" | "ces" | "barchart" | "linechart" | "piechart" | "treemap" | "scatter" | "radar";
-  npsScore?: number;
-  detractors?: string;
-  passives?: string;
-  promoters?: string;
-  answers?: { answer: string; count: number; percentage: string }[];
-  answered?: number;
-  skipped?: number;
-  progress?: { label: string; percentage: number; color: string }[];
-  total?: number;
-  score?: string;
-  badge?: "CSAT" | "CES";
-  ratings?: { rating: number; count: number; color: string; emoji: string }[];
-}
+/* Custom Dotted Line Chart Data ==================== */
+const dottedLineData = [
+  { name: "Page A", uv: 4000, pv: 2400, amt: 2400 },
+  { name: "Page B", uv: 3000, pv: 1398, amt: 2210 },
+  { name: "Page C", uv: 2000, pv: 9800, amt: 2290 },
+  { name: "Page D", uv: 2780, pv: 3908, amt: 2000 },
+  { name: "Page E", uv: 1890, pv: 4800, amt: 2181 },
+  { name: "Page F", uv: 2390, pv: 3800, amt: 2500 },
+  { name: "Page G", uv: 3490, pv: 4300, amt: 2100 },
+];
 
-interface SurveyData {
-  stats: { total: number; notStarted: number; partiallyCompleted: number; completed: number };
-  questions: Question[];
-}
+/* ==================== Custom Dot for Q12 ==================== */
+const CustomizedDot = (props: any) => {
+  const { cx, cy, value } = props;
+  if (cx == null || cy == null) return null;
 
-const surveyData: Record<string, SurveyData> = {
-  "Customer Satisfaction": {
-    stats: { total: 892, notStarted: 520, partiallyCompleted: 5, completed: 367 },
-    questions: [
-      {
-        id: "q1",
-        title: "Q1: How likely are you to recommend our customer support to a friend or colleague?",
-        type: "nps",
-        npsScore: 68,
-        detractors: "8%",
-        passives: "24%",
-        promoters: "68%",
-      },
-      {
-        id: "q2",
-        title: "Q2: What could we do to improve your experience?",
-        type: "multiple-choice",
-        answers: [
-          { answer: "Faster response time", count: 18, percentage: "55%" },
-          { answer: "More knowledgeable agents", count: 10, percentage: "30%" },
-          { answer: "Better self-service options", count: 5, percentage: "15%" },
-        ],
-        answered: 33,
-        skipped: 2,
-        progress: [
-          { label: "Faster response time", percentage: 55, color: "#d32f2f" },
-          { label: "More knowledgeable agents", percentage: 30, color: "#ff9800" },
-          { label: "Better self-service options", percentage: 15, color: "#4caf50" },
-        ],
-      },
-      {
-        id: "q3",
-        title: "Q3: How satisfied are you with our support team?",
-        type: "csat",
-        total: 30,
-        score: "82%",
-        badge: "CSAT",
-        ratings: [
-          { rating: 5, count: 16, color: "#4caf50", emoji: "Very Satisfied" },
-          { rating: 4, count: 8, color: "#cddc39", emoji: "Satisfied" },
-          { rating: 3, count: 3, color: "#ff9800", emoji: "Neutral" },
-          { rating: 2, count: 2, color: "#f44336", emoji: "Dissatisfied" },
-          { rating: 1, count: 1, color: "#d32f2f", emoji: "Very Dissatisfied" },
-        ],
-      },
-      {
-        id: "q4",
-        title: "Q4: How easy was it to get help from our team?",
-        type: "ces",
-        total: 28,
-        score: "71%",
-        badge: "CES",
-        ratings: [
-          { rating: 5, count: 12, color: "#4caf50", emoji: "Star" },
-          { rating: 4, count: 8, color: "#cddc39", emoji: "Star" },
-          { rating: 3, count: 4, color: "#ff9800", emoji: "Star" },
-          { rating: 2, count: 3, color: "#ff5722", emoji: "Star" },
-          { rating: 1, count: 1, color: "#d32f2f", emoji: "Star" },
-        ],
-      },
-    ],
-  },
-  "Product and Services": {
-    stats: { total: 1034, notStarted: 695, partiallyCompleted: 2, completed: 337 },
-    questions: [
-      {
-        id: "q6",
-        title: "Q6: Daily User Activity (Last 7 Days)",
-        type: "barchart",
-      },
-      {
-        id: "q7",
-        title: "Q7: Monthly Active Users vs Page Views",
-        type: "linechart",
-      },
-      {
-        id: "q8",
-        title: "Q8: User Distribution by Region",
-        type: "piechart",
-      },
-      {
-        id: "q9",
-        title: "Q9: Codebase Structure Overview",
-        type: "treemap",
-      },
-      {
-        id: "q10",
-        title: "Q10: Student Performance Comparison (Height vs Weight vs Score)",
-        type: "scatter",
-      },
-      {
-        id: "q11", 
-        title: "Q11: Product & Service Excellence vs Industry", 
-        type: "radar"
-      }
-    ],
-  },
+  if (value > 2500) {
+    return (
+      <svg x={cx - 10} y={cy - 10} width={20} height={20} fill="red" viewBox="0 0 1024 1024">
+        <path d="M512 1009.984c-274.912 0-497.76-222.848-497.76-497.76s222.848-497.76 497.76-497.76c274.912 0 497.76 222.848 497.76 497.76s-222.848 497.76-497.76 497.76zM340.768 295.936c-39.488 0-71.52 32.8-71.52 73.248s32.032 73.248 71.52 73.248c39.488 0 71.52-32.8 71.52-73.248s-32.032-73.248-71.52-73.248zM686.176 296.704c-39.488 0-71.52 32.8-71.52 73.248s32.032 73.248 71.52 73.248c39.488 0 71.52-32.8 71.52-73.248s-32.032-73.248-71.52-73.248zM772.928 555.392c-18.752-8.864-40.928-0.576-49.632 18.528-40.224 88.576-120.256 143.552-208.832 143.552-85.952 0-164.864-52.64-205.952-137.376-9.184-18.912-31.648-26.592-50.08-17.28-18.464 9.408-21.216 21.472-15.936 32.64 52.8 111.424 155.232 186.784 269.76 186.784 117.984 0 217.12-70.944 269.76-186.784 8.672-19.136 9.568-31.2-9.12-40.096z" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg x={cx - 10} y={cy - 10} width={20} height={20} fill="green" viewBox="0 0 1024 1024">
+      <path d="M517.12 53.248q95.232 0 179.2 36.352t145.92 98.304 98.304 145.92 36.352 179.2-36.352 179.2-98.304 145.92-145.92 98.304-179.2 36.352-179.2-36.352-145.92-98.304-98.304-145.92-36.352-179.2 36.352-179.2 98.304-145.92 145.92-98.304 179.2-36.352zM663.552 261.12q-15.36 0-28.16 6.656t-23.04 18.432-15.872 27.648-5.632 33.28q0 35.84 21.504 61.44t51.2 25.6 51.2-25.6 21.504-61.44q0-17.408-5.632-33.28t-15.872-27.648-23.04-18.432-28.16-6.656zM373.76 261.12q-29.696 0-50.688 25.088t-20.992 60.928 20.992 61.44 50.688 25.6 50.176-25.6 20.48-61.44-20.48-60.928-50.176-25.088zM520.192 602.112q-51.2 0-97.28 9.728t-82.944 27.648-62.464 41.472-35.84 51.2q-1.024 1.024-1.024 2.048-1.024 3.072-1.024 8.704t2.56 11.776 7.168 11.264 12.8 6.144q25.6-27.648 62.464-50.176 31.744-19.456 79.36-35.328t114.176-15.872q67.584 0 116.736 15.872t81.92 35.328q37.888 22.528 63.488 50.176 17.408-5.12 19.968-18.944t0.512-18.944-3.072-7.168-1.024-3.072q-26.624-55.296-100.352-88.576t-176.128-33.28z" />
+    </svg>
+  );
 };
-const zeroStats = { total: 0, notStarted: 0, partiallyCompleted: 0, completed: 0 };
 
-/* ==================== CHARTS ==================== */
-  const renderBarChart = () => (
+const renderBarChart = () => (
     <Card sx={{ borderRadius: 2, boxShadow: 1, mt: 2 }}>
       <CardContent sx={{ p: 4 }}>
         <Typography variant="subtitle1" sx={{ mb: 3, fontWeight: 600, color: "#333" }}>
@@ -566,14 +472,181 @@ const zeroStats = { total: 0, notStarted: 0, partiallyCompleted: 0, completed: 0
   </Card>
 );
 
-/* ==================== MAIN COMPONENT ==================== */
-const AnalyzeAnswers: React.FC = () => {
+const renderDottedLineChart = () => (
+  <Card sx={{ borderRadius: 2, boxShadow: 3, mt: 4, overflow: "hidden" }}>
+    <CardContent sx={{ p: 5, bgcolor: "#fafafa" }}>
+      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "#1a3e72" }}>
+        Q12: User Engagement Trend (Custom Dots)
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 4, color: "#555" }}>
+        Red = High Activity (2500) • Green = Normal Activity
+      </Typography>
+      <Box sx={{ height: 500 }}>
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={dottedLineData} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+            <XAxis dataKey="name" tick={{ fill: "#555" }} />
+            <YAxis tick={{ fill: "#555" }} />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="pv"
+              stroke="#8884d8"
+              strokeWidth={4}
+              dot={<CustomizedDot />}
+              name="Page Views (PV)"
+            />
+            <Line
+              type="monotone"
+              dataKey="uv"
+              stroke="#82ca9d"
+              strokeWidth={4}
+              dot={false}
+              name="Unique Visitors (UV)"
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </Box>
+    </CardContent>
+  </Card>
+);
+
+const surveyData: Record<string, SurveyData> = {
+  "Customer Satisfaction": {
+    stats: { total: 892, notStarted: 520, partiallyCompleted: 5, completed: 367 },
+    questions: [
+      {
+        id: "q1",
+        title: "Q1: How likely are you to recommend our customer support to a friend or colleague?",
+        type: "nps",
+        npsScore: 68,
+        detractors: "8%",
+        passives: "24%",
+        promoters: "68%",
+      },
+      {
+        id: "q2",
+        title: "Q2: What could we do to improve your experience?",
+        type: "multiple-choice",
+        answers: [
+          { answer: "Faster response time", count: 18, percentage: "55%" },
+          { answer: "More knowledgeable agents", count: 10, percentage: "30%" },
+          { answer: "Better self-service options", count: 5, percentage: "15%" },
+        ],
+        answered: 33,
+        skipped: 2,
+        progress: [
+          { label: "Faster response time", percentage: 55, color: "#d32f2f" },
+          { label: "More knowledgeable agents", percentage: 30, color: "#ff9800" },
+          { label: "Better self-service options", percentage: 15, color: "#4caf50" },
+        ],
+      },
+      {
+        id: "q3",
+        title: "Q3: How satisfied are you with our support team?",
+        type: "csat",
+        total: 30,
+        score: "82%",
+        badge: "CSAT",
+        ratings: [
+          { rating: 5, count: 16, color: "#4caf50", emoji: "Very Satisfied" },
+          { rating: 4, count: 8, color: "#cddc39", emoji: "Satisfied" },
+          { rating: 3, count: 3, color: "#ff9800", emoji: "Neutral" },
+          { rating: 2, count: 2, color: "#f44336", emoji: "Dissatisfied" },
+          { rating: 1, count: 1, color: "#d32f2f", emoji: "Very Dissatisfied" },
+        ],
+      },
+      {
+        id: "q4",
+        title: "Q4: How easy was it to get help from our team?",
+        type: "ces",
+        total: 28,
+        score: "71%",
+        badge: "CES",
+        ratings: [
+          { rating: 5, count: 12, color: "#4caf50", emoji: "Star" },
+          { rating: 4, count: 8, color: "#cddc39", emoji: "Star" },
+          { rating: 3, count: 4, color: "#ff9800", emoji: "Star" },
+          { rating: 2, count: 3, color: "#ff5722", emoji: "Star" },
+          { rating: 1, count: 1, color: "#d32f2f", emoji: "Star" },
+        ],
+      },
+    ],
+  },
+  "Product and Services": {
+    stats: { total: 1034, notStarted: 695, partiallyCompleted: 2, completed: 337 },
+    questions: [
+      {
+        id: "q6",
+        title: "Q6: Daily User Activity (Last 7 Days)",
+        type: "barchart",
+      },
+      {
+        id: "q7",
+        title: "Q7: Monthly Active Users vs Page Views",
+        type: "linechart",
+      },
+      {
+        id: "q8",
+        title: "Q8: User Distribution by Region",
+        type: "piechart",
+      },
+      {
+        id: "q9",
+        title: "Q9: Codebase Structure Overview",
+        type: "treemap",
+      },
+      {
+        id: "q10",
+        title: "Q10: Student Performance Comparison (Height vs Weight vs Score)",
+        type: "scatter",
+      },
+      {
+        id: "q11", 
+        title: "Q11: Product & Service Excellence vs Industry", 
+        type: "radar"
+      },
+      {
+        id: "q12", 
+        title: "Q12: User Engagement Trend (Custom Dots)", 
+        type: "dottedline"
+      },
+    ],
+  },
+};
+const zeroStats = { total: 0, notStarted: 0, partiallyCompleted: 0, completed: 0 };
+
+interface Question {
+  id: string;
+  title: string;
+  type: "nps" | "multiple-choice" | "csat" | "ces" | "barchart" | "linechart" | "piechart" | "treemap" | "scatter" | "radar" | "dottedline";
+  npsScore?: number;
+  detractors?: string;
+  passives?: string;
+  promoters?: string;
+  answers?: { answer: string; count: number; percentage: string }[];
+  answered?: number;
+  skipped?: number;
+  progress?: { label: string; percentage: number; color: string }[];
+  total?: number;
+  score?: string;
+  badge?: "CSAT" | "CES";
+  ratings?: { rating: number; count: number; color: string; emoji: string }[];
+}
+
+interface SurveyData {
+  stats: { total: number; notStarted: number; partiallyCompleted: number; completed: number };
+  questions: Question[];
+}
+
+
+  const AnalyzeAnswers: React.FC = () => {
   const [survey, setSurvey] = useState<string>("");
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<string | null>(null); // ONLY ONE, CORRECT TYPE
-
+  const [hoveredIndex, setHoveredIndex] = useState<string | null>(null); 
   useEffect(() => {
     setStartDate(dayjs("2025-10-01"));
     setEndDate(dayjs("2025-11-16"));
@@ -596,7 +669,7 @@ const AnalyzeAnswers: React.FC = () => {
 
     if (survey === "Product and Services") {
       questions = questions.filter(q =>
-        ["barchart", "linechart", "piechart", "treemap", "scatter", "radar"].includes(q.type)
+        ["barchart", "linechart", "piechart", "treemap", "scatter", "radar", "dottedline"].includes(q.type)
       );
     }
 
@@ -605,15 +678,16 @@ const AnalyzeAnswers: React.FC = () => {
 
   const { stats, questions } = currentData;
 
-  const renderQuestion = (q: Question) => {
-    if (q.type === "barchart") return renderBarChart();
-    if (q.type === "linechart") return renderLineChart();
-    if (q.type === "piechart") return renderPieChart();
-    if (q.type === "treemap") return renderTreemap();
-    if (q.type === "scatter") return renderScatterChart();
-    if (q.type === "radar") return renderRadarChart();
+const renderQuestion = (q: Question) => {
+  if (q.type === "barchart") return renderBarChart();
+  if (q.type === "linechart") return renderLineChart();
+  if (q.type === "piechart") return renderPieChart();
+  if (q.type === "treemap") return renderTreemap();
+  if (q.type === "scatter") return renderScatterChart();
+  if (q.type === "radar") return renderRadarChart();
+  if (q.type === "dottedline") return renderDottedLineChart();
 
-    if (q.type === "nps" && q.npsScore !== undefined) {
+  if (q.type === "nps" && q.npsScore !== undefined) {
       return (
         <Card key={q.id} sx={{ borderRadius: 2, boxShadow: 1, mt: 2, px: 4, py: 4 }}>
           <Typography variant="subtitle1" sx={{ mb: 2, fontWeight: 500, color: "#333" }}>{q.title}</Typography>
@@ -680,7 +754,7 @@ const AnalyzeAnswers: React.FC = () => {
                   const barId = `${q.id}-progress-${idx}`;
                   return (
                     <Box
-                      key={idx}
+                      key={barId}
                       sx={{ display: "flex", alignItems: "center", mb: 4, gap: 2 }}
                       // onMouseEnter={() => setHoveredIndex(hoverKey)}
                       onMouseEnter={() => setHoveredIndex(barId)}
@@ -722,6 +796,7 @@ const AnalyzeAnswers: React.FC = () => {
                   );
                 })}
               </Box>
+              
             </Box>
           </CardContent>
         </Card>
@@ -890,4 +965,9 @@ const AnalyzeAnswers: React.FC = () => {
 };
 
 export default AnalyzeAnswers;
+
+
+
+
+
 
