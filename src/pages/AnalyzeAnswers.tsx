@@ -47,6 +47,9 @@ import {
   Radar,
 } from "recharts";
 
+// ADD THIS IMPORT
+import { ResponsiveHeatMap } from '@nivo/heatmap';
+
 
 const barChartData = [
   { name: "Mon", signups: 120, logins: 380 },
@@ -270,6 +273,46 @@ const CustomizedDot = (props: any) => {
     </svg>
   );
 };
+
+
+//heatmap
+const heatmapData = [
+  { id: "Very Satisfied", data: [
+    { x: "Strongly Agree", y: 428 },
+    { x: "Agree", y: 312 },
+    { x: "Neutral", y: 78 },
+    { x: "Disagree", y: 28 },
+    { x: "Strongly Disagree", y: 12 }
+  ]},
+  { id: "Satisfied", data: [
+    { x: "Strongly Agree", y: 298 },
+    { x: "Agree", y: 498 },
+    { x: "Neutral", y: 298 },
+    { x: "Disagree", y: 78 },
+    { x: "Strongly Disagree", y: 32 }
+  ]},
+  { id: "Neutral", data: [
+    { x: "Strongly Agree", y: 68 },
+    { x: "Agree", y: 238 },
+    { x: "Neutral", y: 612 },
+    { x: "Disagree", y: 312 },
+    { x: "Strongly Disagree", y: 148 }
+  ]},
+  { id: "Dissatisfied", data: [
+    { x: "Strongly Agree", y: 22 },
+    { x: "Agree", y: 68 },
+    { x: "Neutral", y: 198 },
+    { x: "Disagree", y: 498 },
+    { x: "Strongly Disagree", y: 398 }
+  ]},
+  { id: "Very Dissatisfied", data: [
+    { x: "Strongly Agree", y: 8 },
+    { x: "Agree", y: 28 },
+    { x: "Neutral", y: 98 },
+    { x: "Disagree", y: 298 },
+    { x: "Strongly Disagree", y: 788 }
+  ]}
+];
 
 const renderBarChart = () => (
     <Card sx={{ borderRadius: 2, boxShadow: 1, mt: 2 }}>
@@ -514,6 +557,64 @@ const renderDottedLineChart = () => (
   </Card>
 );
 
+const renderHeatMapChart = () => (
+  <Card sx={{ borderRadius: 2, boxShadow: 3, mt: 4, overflow: "hidden" }}>
+    <CardContent sx={{ p: 5, bgcolor: "#fafafa" }}>
+      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "#1a3e72" }}>
+        Q12: Satisfaction × Agreement Level Heatmap
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 4, color: "#555", fontStyle: "italic" }}>
+        Cross-tabulation of overall satisfaction vs agreement level
+      </Typography>
+      <Box sx={{ height: 620, bgcolor: "white", borderRadius: 2 }}>
+        <ResponsiveHeatMap
+          data={heatmapData}
+          margin={{ top: 100, right: 120, bottom: 100, left: 120 }}
+          valueFormat=">-.0f"
+          axisTop={{ tickRotation: -45, legend: "Agreement Level", legendPosition: "middle", legendOffset: -70 }}
+          axisRight={{ legend: "Satisfaction Rating", legendPosition: "middle", legendOffset: 90 }}
+          axisLeft={{ legend: "Satisfaction Rating", legendPosition: "middle", legendOffset: -100 }}
+          colors={{ type: "diverging", scheme: "red_blue", divergeAt: 0.5, minValue: 0, maxValue: 800 }}
+          emptyColor="#f0f0f0"
+          labelTextColor={{ from: "color", modifiers: [["darker", 2]] }}
+          animate={true}
+          hoverTarget="cell"
+          tooltip={({ cell }) => (
+            <div style={{ background: "white", padding: "10px 14px", borderRadius: 8, boxShadow: "0 4px 20px rgba(0,0,0,0.15)" }}>
+              <strong>{cell.serieId}</strong> → <strong>{cell.data.x}</strong><br/>
+              <span style={{ color: "#1976d2", fontWeight: "bold" }}>{cell.value} respondents</span>
+            </div>
+          )}
+          legends={[
+            {
+              anchor: "bottom",
+              translateY: 80,
+              length: 500,
+              thickness: 12,
+              direction: "row",
+              title: "Number of Respondents →",
+              titleAlign: "middle",
+            }
+          ]}
+        />
+      </Box>
+    </CardContent>
+  </Card>
+);
+
+const renderQuestion = (q: Question) => {
+  if (q.type === "barchart") return renderBarChart();
+  if (q.type === "linechart") return renderLineChart();
+  if (q.type === "piechart") return renderPieChart();
+  if (q.type === "treemap") return renderTreemap();
+  if (q.type === "scatter") return renderScatterChart();
+  if (q.type === "radar") return renderRadarChart();
+  if (q.type === "heatmap") return renderHeatMapChart();        // ← THIS LINE WAS MISSING
+  if (q.type === "dottedline") return renderDottedLineChart(); // keep old one just in case
+
+  // ... rest of your NPS, CSAT, etc. code stays exactly the same
+};
+
 const surveyData: Record<string, SurveyData> = {
   "Customer Satisfaction": {
     stats: { total: 892, notStarted: 520, partiallyCompleted: 5, completed: 367 },
@@ -552,11 +653,11 @@ const surveyData: Record<string, SurveyData> = {
         score: "82%",
         badge: "CSAT",
         ratings: [
-          { rating: 5, count: 16, color: "#4caf50", emoji: "Very Satisfied" },
-          { rating: 4, count: 8, color: "#cddc39", emoji: "Satisfied" },
-          { rating: 3, count: 3, color: "#ff9800", emoji: "Neutral" },
-          { rating: 2, count: 2, color: "#f44336", emoji: "Dissatisfied" },
-          { rating: 1, count: 1, color: "#d32f2f", emoji: "Very Dissatisfied" },
+          { rating: 5, count: 16, color: "#4caf50", emoji: "🤩" },
+          { rating: 4, count: 8, color: "#cddc39", emoji: "😊" },
+          { rating: 3, count: 3, color: "#ff9800", emoji: "😐" },
+          { rating: 2, count: 2, color: "#f44336", emoji: "😞" },
+          { rating: 1, count: 1, color: "#d32f2f", emoji: "😡" },
         ],
       },
       {
@@ -567,11 +668,11 @@ const surveyData: Record<string, SurveyData> = {
         score: "71%",
         badge: "CES",
         ratings: [
-          { rating: 5, count: 12, color: "#4caf50", emoji: "Star" },
-          { rating: 4, count: 8, color: "#cddc39", emoji: "Star" },
-          { rating: 3, count: 4, color: "#ff9800", emoji: "Star" },
-          { rating: 2, count: 3, color: "#ff5722", emoji: "Star" },
-          { rating: 1, count: 1, color: "#d32f2f", emoji: "Star" },
+          { rating: 5, count: 12, color: "#4caf50", emoji: "⭐" },
+          { rating: 4, count: 8, color: "#cddc39", emoji: "⭐" },
+          { rating: 3, count: 4, color: "#ff9800", emoji: "⭐" },
+          { rating: 2, count: 3, color: "#ff5722", emoji: "⭐" },
+          { rating: 1, count: 1, color: "#d32f2f", emoji: "⭐" },
         ],
       },
     ],
@@ -614,6 +715,10 @@ const surveyData: Record<string, SurveyData> = {
         title: "Q12: User Engagement Trend (Custom Dots)", 
         type: "dottedline"
       },
+      { id: "q12", 
+        title: "Q12: Satisfaction × Agreement Level Heatmap",
+        type: "heatmap"
+      }
     ],
   },
 };
@@ -622,7 +727,7 @@ const zeroStats = { total: 0, notStarted: 0, partiallyCompleted: 0, completed: 0
 interface Question {
   id: string;
   title: string;
-  type: "nps" | "multiple-choice" | "csat" | "ces" | "barchart" | "linechart" | "piechart" | "treemap" | "scatter" | "radar" | "dottedline";
+  type: "nps" | "multiple-choice" | "csat" | "ces" | "barchart" | "linechart" | "piechart" | "treemap" | "scatter" | "radar" | "dottedline" | "heatmap";
   npsScore?: number;
   detractors?: string;
   passives?: string;
@@ -671,7 +776,7 @@ interface SurveyData {
 
     if (survey === "Product and Services") {
       questions = questions.filter(q =>
-        ["barchart", "linechart", "piechart", "treemap", "scatter", "radar", "dottedline"].includes(q.type)
+        ["barchart", "linechart", "piechart", "treemap", "scatter", "radar", "dottedline", "heatmap"].includes(q.type)
       );
     }
 
@@ -688,6 +793,7 @@ const renderQuestion = (q: Question) => {
   if (q.type === "scatter") return renderScatterChart();
   if (q.type === "radar") return renderRadarChart();
   if (q.type === "dottedline") return renderDottedLineChart();
+  if (q.type === "heatmap") return renderHeatMapChart();
 
   if (q.type === "nps" && q.npsScore !== undefined) {
       return (
