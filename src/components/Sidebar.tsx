@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import CruxLogo from "../images/Crux.png";
 import {
   Drawer,
   List,
@@ -65,7 +66,7 @@ const Sidebar: React.FC = () => {
       >
         <Box
           component="img"
-          src="/public/Crux.png" // ✅ Place your image as public/logo.png
+          src={CruxLogo}
           alt="Crux Logo"
           sx={{
             height: 40,
