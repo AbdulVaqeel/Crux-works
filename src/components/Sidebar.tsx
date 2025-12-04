@@ -65,7 +65,7 @@ const Sidebar: React.FC = () => {
       >
         <Box
           component="img"
-          src="src/crux_logo.png" // ✅ Place your image as public/logo.png
+          src="/public/Crux.png" // ✅ Place your image as public/logo.png
           alt="Crux Logo"
           sx={{
             height: 40,
