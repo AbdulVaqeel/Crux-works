@@ -47,6 +47,7 @@ import {
   Radar,
 } from "recharts";
 
+
 const barChartData = [
   { name: "Mon", signups: 120, logins: 380 },
   { name: "Tue", signups: 180, logins: 420 },
@@ -248,6 +249,7 @@ const dottedLineData = [
   { name: "Page F", uv: 2390, pv: 3800, amt: 2500 },
   { name: "Page G", uv: 3490, pv: 4300, amt: 2100 },
 ];
+
 
 /* ==================== Custom Dot for Q12 ==================== */
 const CustomizedDot = (props: any) => {
