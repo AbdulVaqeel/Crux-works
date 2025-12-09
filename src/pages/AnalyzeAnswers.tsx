@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useMemo, useEffect } from "react";
 import {
   Box,
@@ -47,8 +49,11 @@ import {
   Radar,
 } from "recharts";
 
-// ADD THIS IMPORT
+
 import { ResponsiveHeatMap } from '@nivo/heatmap';
+import { ResponsiveLine } from '@nivo/line';
+import { WordCloud } from '@isoterik/react-word-cloud';
+import "tippy.js/dist/tippy.css";
 
 
 const barChartData = [
@@ -314,6 +319,89 @@ const heatmapData = [
   ]}
 ];
 
+const lineChartNivoData = [
+  {
+    id: "Desktop",
+    color: "#3b82f6",
+    data: [
+      { x: "Jan", y: 412 },
+      { x: "Feb", y: 489 },
+      { x: "Mar", y: 567 },
+      { x: "Apr", y: 612 },
+      { x: "May", y: 689 },
+      { x: "Jun", y: 756 }
+    ]
+  },
+  {
+    id: "Mobile",
+    color: "#10b981",
+    data: [
+      { x: "Jan", y: 298 },
+      { x: "Feb", y: 356 },
+      { x: "Mar", y: 423 },
+      { x: "Apr", y: 498 },
+      { x: "May", y: 567 },
+      { x: "Jun", y: 678 }
+    ]
+  },
+  {
+    id: "Tablet",
+    color: "#f59e0b",
+    data: [
+      { x: "Jan", y: 123 },
+      { x: "Feb", y: 156 },
+      { x: "Mar", y: 189 },
+      { x: "Apr", y: 234 },
+      { x: "May", y: 267 },
+      { x: "Jun", y: 312 }
+    ]
+  }
+];
+
+// Word Cloud Data for Q14 - Most Frequent Customer Feedback Words
+const wordCloudData = [
+  { text: "Excellent", value: 89 },
+  { text: "Fast Delivery", value: 76 },
+  { text: "Great Support", value: 68 },
+  { text: "Easy to Use", value: 64 },
+  { text: "High Quality", value: 58 },
+  { text: "Reliable", value: 52 },
+  { text: "Affordable", value: 48 },
+  { text: "Innovative", value: 45 },
+  { text: "User-Friendly", value: 42 },
+  { text: "Recommended", value: 40 },
+  { text: "Smooth Experience", value: 38 },
+  { text: "Best Ever", value: 35 },
+  { text: "Love It", value: 33 },
+  { text: "Perfect", value: 30 },
+  { text: "Amazing", value: 28 },
+  { text: "Slow", value: 18 },
+  { text: "Expensive", value: 15 },
+  { text: "Buggy", value: 12 },
+  { text: "Confusing", value: 10 },
+  { text: "Needs Improvement", value: 8 }
+];
+
+const useFetchJson = <T,>(url: string, limit?: number) => {
+  const [data, setData] = useState<T[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    fetch(url)
+      .then(r => r.json())
+      .then(json => {
+        setData(limit ? json.slice(0, limit) : json);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [url, limit]);
+  return { data, loading };
+};
+
+interface IOlympicData {
+  athlete: string; age: number; country: string; year: number; date: string;
+  sport: string; gold: number; silver: number; bronze: number; total: number;
+}
+
 const renderBarChart = () => (
     <Card sx={{ borderRadius: 2, boxShadow: 1, mt: 2 }}>
       <CardContent sx={{ p: 4 }}>
@@ -561,7 +649,7 @@ const renderHeatMapChart = () => (
   <Card sx={{ borderRadius: 2, boxShadow: 3, mt: 4, overflow: "hidden" }}>
     <CardContent sx={{ p: 5, bgcolor: "#fafafa" }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "#1a3e72" }}>
-        Q12: Satisfaction × Agreement Level Heatmap
+        Q13: Satisfaction × Agreement Level Heatmap
       </Typography>
       <Typography variant="body2" sx={{ mb: 4, color: "#555", fontStyle: "italic" }}>
         Cross-tabulation of overall satisfaction vs agreement level
@@ -602,18 +690,119 @@ const renderHeatMapChart = () => (
   </Card>
 );
 
-const renderQuestion = (q: Question) => {
-  if (q.type === "barchart") return renderBarChart();
-  if (q.type === "linechart") return renderLineChart();
-  if (q.type === "piechart") return renderPieChart();
-  if (q.type === "treemap") return renderTreemap();
-  if (q.type === "scatter") return renderScatterChart();
-  if (q.type === "radar") return renderRadarChart();
-  if (q.type === "heatmap") return renderHeatMapChart();        // ← THIS LINE WAS MISSING
-  if (q.type === "dottedline") return renderDottedLineChart(); // keep old one just in case
+const renderLineChartNivo = () => (
+  <Card sx={{ borderRadius: 2, boxShadow: 3, mt: 4, overflow: "hidden" }}>
+    <CardContent sx={{ p: 5, bgcolor: "#fafafa" }}>
+      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "#1a3e72" }}>
+        Q14: Traffic Sources Trend (Last 6 Months)
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 4, color: "#555", fontStyle: "italic" }}>
+        Desktop vs Mobile vs Tablet users over time
+      </Typography>
+      <Box sx={{ height: 520 }}>
+        <ResponsiveLine
+          data={lineChartNivoData}
+          margin={{ top: 60, right: 140, bottom: 80, left: 80 }}
+          xScale={{ type: 'point' }}
+          yScale={{ type: 'linear', min: 0, max: 'auto', stacked: false }}
+          axisTop={null}
+          axisRight={null}
+          axisBottom={{
+            legend: 'Month',
+            legendOffset: 46,
+            legendPosition: 'middle'
+          }}
+          axisLeft={{
+            legend: 'Number of Users',
+            legendOffset: -60,
+            legendPosition: 'middle'
+          }}
+          colors={{ datum: 'color' }}
+          pointSize={12}
+          pointColor={{ theme: 'background' }}
+          pointBorderWidth={3}
+          pointBorderColor={{ from: 'serieColor' }}
+          pointLabelYOffset={-14}
+          enableArea={true}
+          areaOpacity={0.15}
+          useMesh={true}
+          enableCrosshair={true}
+          crosshairType="x"
+          animate={true}
+          motionConfig="gentle"
+          legends={[
+            {
+              anchor: 'bottom-right',
+              direction: 'column',
+              justify: false,
+              translateX: 120,
+              translateY: 0,
+              itemsSpacing: 8,
+              itemDirection: 'left-to-right',
+              itemWidth: 100,
+              itemHeight: 24,
+              itemOpacity: 0.85,
+              symbolSize: 14,
+              symbolShape: 'circle',
+              effects: [
+                {
+                  on: 'hover',
+                  style: {
+                    itemOpacity: 1
+                  }
+                }
+              ]
+            }
+          ]}
+        />
+      </Box>
+    </CardContent>
+  </Card>
+);
 
-  // ... rest of your NPS, CSAT, etc. code stays exactly the same
-};
+
+const wordCloudColors = [
+  '#1e40af',
+  '#3b82f6',
+  '#10b981',
+  '#f59e0b',
+  '#ef4444',
+  '#8b5cf6',
+] as const;
+
+const resolveFill = (_word: any, index: number) =>
+  wordCloudColors[index % wordCloudColors.length];
+
+const fixedRotation = (_word: any, _index: number) => 0;
+
+const renderWordCloud = () => (
+  <Card sx={{ borderRadius: 2, boxShadow: 3, mt: 4, overflow: "hidden" }}>
+    <CardContent sx={{ p: 5, bgcolor: "#fafafa" }}>
+      <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "#1a3e72" }}>
+        Q15: Most Frequent Words in Customer Feedback
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 4, color: "#555", fontStyle: "italic" }}>
+        Based on 1,247 open-ended responses (larger = more frequent)
+      </Typography>
+      <Box sx={{ width: '100%', height: 520, bgcolor: "white", borderRadius: 2, p: 4 }}>
+       <WordCloud
+       words={wordCloudData}
+       width={800}
+       height={500}
+       font="Roboto, sans-serif"
+       fontWeight="bold"
+       fontSize={(word) => Math.log(word.value + 1) * 15 + 20}
+       fill={resolveFill}
+       padding={2}
+       rotate={fixedRotation}
+       spiral="archimedean"
+       onWordClick={(word) => alert(`"${word.text}" mentioned ${word.value} times`)}
+/>
+      </Box>
+    </CardContent>
+  </Card>
+);
+
 
 const surveyData: Record<string, SurveyData> = {
   "Customer Satisfaction": {
@@ -715,10 +904,20 @@ const surveyData: Record<string, SurveyData> = {
         title: "Q12: User Engagement Trend (Custom Dots)", 
         type: "dottedline"
       },
-      { id: "q12", 
-        title: "Q12: Satisfaction × Agreement Level Heatmap",
+      { id: "q13", 
+        title: "Q13: Satisfaction × Agreement Level Heatmap",
         type: "heatmap"
-      }
+      },
+      { 
+      id: "q14", 
+      title: "Q14: Traffic Sources Trend (Last 6 Months)", 
+      type: "line-nivo" 
+      },
+      {
+      id: "q15",
+      title: "Q15: Most Frequent Words in Customer Feedback",
+      type: "wordcloud"
+      },
     ],
   },
 };
@@ -727,7 +926,7 @@ const zeroStats = { total: 0, notStarted: 0, partiallyCompleted: 0, completed: 0
 interface Question {
   id: string;
   title: string;
-  type: "nps" | "multiple-choice" | "csat" | "ces" | "barchart" | "linechart" | "piechart" | "treemap" | "scatter" | "radar" | "dottedline" | "heatmap";
+  type: "nps" | "multiple-choice" | "csat" | "ces" | "barchart" | "linechart" | "piechart" | "treemap" | "scatter" | "radar" | "dottedline" | "heatmap" | "line-nivo" | "wordcloud";
   npsScore?: number;
   detractors?: string;
   passives?: string;
@@ -769,21 +968,33 @@ interface SurveyData {
 
   const showRealData = survey && isCorrectDateRange;
 
-  const currentData = useMemo(() => {
-    if (!showRealData || !surveyData[survey]) return { stats: zeroStats, questions: [] };
+ const CHART_TYPES = [
+  "barchart", "linechart", "piechart", "treemap", "scatter",
+  "radar", "dottedline", "heatmap", "line-nivo", "wordcloud"
+] as const;
 
-    let questions = surveyData[survey].questions;
+type ChartType = (typeof CHART_TYPES)[number];
 
-    if (survey === "Product and Services") {
-      questions = questions.filter(q =>
-        ["barchart", "linechart", "piechart", "treemap", "scatter", "radar", "dottedline", "heatmap"].includes(q.type)
-      );
-    }
+// Then inside your useMemo:
+const currentData = useMemo(() => {
+  if (!showRealData || !surveyData[survey]) {
+    return { stats: zeroStats, questions: [] };
+  }
 
-    return { stats: surveyData[survey].stats, questions };
-  }, [showRealData, survey]);
+  let questions = surveyData[survey].questions;
 
-  const { stats, questions } = currentData;
+  if (survey === "Product and Services") {
+    questions = questions.filter(
+      (q) => !!q.type && CHART_TYPES.some((t) => t === q.type)
+    );
+  }
+
+  return { stats: surveyData[survey].stats, questions };
+}, [showRealData, survey]);
+
+const { stats, questions } = currentData;
+
+
 
 const renderQuestion = (q: Question) => {
   if (q.type === "barchart") return renderBarChart();
@@ -794,6 +1005,8 @@ const renderQuestion = (q: Question) => {
   if (q.type === "radar") return renderRadarChart();
   if (q.type === "dottedline") return renderDottedLineChart();
   if (q.type === "heatmap") return renderHeatMapChart();
+  if (q.type === "line-nivo") return renderLineChartNivo();
+  if (q.type === "wordcloud") return renderWordCloud();
 
   if (q.type === "nps" && q.npsScore !== undefined) {
       return (
@@ -1073,9 +1286,3 @@ const renderQuestion = (q: Question) => {
 };
 
 export default AnalyzeAnswers;
-
-
-
-
-
-
