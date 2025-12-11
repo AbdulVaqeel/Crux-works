@@ -77,11 +77,11 @@ const lineChartData = [
 ];
 
 const pieChartData = [
-  { name: "North America", value: 380 },
-  { name: "Europe", value: 290 },
-  { name: "Asia Pacific", value: 210 },
-  { name: "Latin America", value: 95 },
-  { name: "Middle East & Africa", value: 65 },
+  { name: "Riyadh", value: 380 },
+  { name: "Meccah", value: 290 },
+  { name: "Qassim", value: 210 },
+  { name: "Madina", value: 95 },
+  { name: "Dammam", value: 65 },
 ];
 
 const COLORS = ["#42a5f5", "#66bb6a", "#ff9800", "#f44336", "#9c27b0"];
@@ -406,21 +406,21 @@ const renderBarChart = () => (
     <Card sx={{ borderRadius: 2, boxShadow: 1, mt: 2 }}>
       <CardContent sx={{ p: 4 }}>
         <Typography variant="subtitle1" sx={{ mb: 3, fontWeight: 600, color: "#333" }}>
-          Q6: Daily User Activity (Last 7 Days)
+          Q6: Bar Chart
         </Typography>
         <Typography variant="body2" sx={{ mb: 4, color: "#555" }}>
-          Comparison of <strong>New Signups</strong> vs <strong>Active Logins</strong>
+          Use Cases - <strong>Single-Choice, Rating Questions(0-10), Yes/No, Demographics i.e., Age,Gender..</strong>
         </Typography>
         <Box sx={{ height: 420 }}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={barChartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <RechartsXAxis dataKey="name" tick={{ fill: "#555" }} />
-              <RechartsYAxis tick={{ fill: "#555" }} />
+              {/* <RechartsXAxis dataKey="name" tick={{ fill: "#555" }} />
+              <RechartsYAxis tick={{ fill: "#555" }} /> */}
               <Tooltip cursor={{ fill: "rgba(0,0,0,0.05)" }} />
-              <Legend wrapperStyle={{ paddingTop: "20px" }} />
-              <Bar dataKey="signups" fill="#42a5f5" radius={[8, 8, 0, 0]} name="New Signups" />
-              <Bar dataKey="logins" fill="#66bb6a" radius={[8, 8, 0, 0]} name="Active Logins" />
+              {/* <Legend wrapperStyle={{ paddingTop: "20px" }} /> */}
+              <Bar dataKey="signups" fill="#42a5f5" radius={[8, 8, 0, 0]} />
+              <Bar dataKey="logins" fill="#66bb6a" radius={[8, 8, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </Box>
@@ -431,21 +431,21 @@ const renderBarChart = () => (
     <Card sx={{ borderRadius: 2, boxShadow: 1, mt: 4 }}>
       <CardContent sx={{ p: 4 }}>
         <Typography variant="subtitle1" sx={{ mb: 3, fontWeight: 600, color: "#333" }}>
-          Q7: Monthly Active Users vs Page Views
+          Q7: Average Line
         </Typography>
         <Typography variant="body2" sx={{ mb: 4, color: "#555" }}>
-          Trend of <strong>Active Users (UV)</strong> and <strong>Page Views (PV)</strong> over 7 months
+          Use Cases - <strong>Likert Scale 1--5 (Strongly Agree to Disagree)</strong>
         </Typography>
         <Box sx={{ height: 420 }}>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={lineChartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-              <RechartsXAxis dataKey="name" tick={{ fill: "#555" }} />
-              <RechartsYAxis tick={{ fill: "#555" }} />
+              {/* <RechartsXAxis dataKey="name" tick={{ fill: "#555" }} />
+              <RechartsYAxis tick={{ fill: "#555" }} /> */}
               <Tooltip cursor={{ fill: "rgba(0,0,0,0.05)" }} />
-              <Legend wrapperStyle={{ paddingTop: "20px" }} />
-              <Line type="monotone" dataKey="uv" stroke="#8884d8" strokeWidth={4} dot={{ r: 6 }} activeDot={{ r: 9 }} name="Active Users" />
-              <Line type="monotone" dataKey="pv" stroke="#82ca9d" strokeWidth={4} dot={{ r: 6 }} activeDot={{ r: 9 }} name="Page Views" />
+              {/* <Legend wrapperStyle={{ paddingTop: "20px" }} /> */}
+              <Line type="monotone" dataKey="uv" stroke="#8884d8" strokeWidth={4} dot={{ r: 6 }} activeDot={{ r: 9 }} />
+              <Line type="monotone" dataKey="pv" stroke="#82ca9d" strokeWidth={4} dot={{ r: 6 }} activeDot={{ r: 9 }} />
             </LineChart>
           </ResponsiveContainer>
         </Box>
@@ -456,10 +456,10 @@ const renderBarChart = () => (
     <Card sx={{ borderRadius: 2, boxShadow: 1, mt: 4 }}>
       <CardContent sx={{ p: 4 }}>
         <Typography variant="subtitle1" sx={{ mb: 3, fontWeight: 600, color: "#333" }}>
-          Q8: User Distribution by Region
+          Q8: Pie Chart
         </Typography>
         <Typography variant="body2" sx={{ mb: 4, color: "#555" }}>
-          Total users across regions
+        Use Cases - <strong>Single-Choice, Yes/No</strong>
         </Typography>
         <Box sx={{ height: 420 }}>
           <ResponsiveContainer width="100%" height="100%">
@@ -472,14 +472,14 @@ const renderBarChart = () => (
                 outerRadius={140}
                 fill="#8884d8"
                 dataKey="value"
-                label={({ name, value }) => `${name}: ${value}`}
+                // label={({ name, value }) => `${name}: ${value}`}
               >
                 {pieChartData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
               <Tooltip />
-              <Legend />
+              {/* <Legend /> */}
             </PieChart>
           </ResponsiveContainer>
         </Box>
@@ -514,14 +514,15 @@ const renderBarChart = () => (
       </g>
     );
   };
+  
   const renderTreemap = () => (
     <Card sx={{ borderRadius: 2, boxShadow: 1, mt: 4 }}>
       <CardContent sx={{ p: 4 }}>
         <Typography variant="subtitle1" sx={{ mb: 3, fontWeight: 600, color: "#333" }}>
-          Q9: Codebase Structure Overview
+          Q9: Treemap
         </Typography>
         <Typography variant="body2" sx={{ mb: 4, color: "#555" }}>
-          Hierarchical view of module sizes (lines of code)
+          Use Cases- <strong>Demographics</strong>
         </Typography>
         <Box sx={{ height: 600 }}>
           <ResponsiveContainer width="100%" height="100%">
@@ -549,10 +550,10 @@ const renderBarChart = () => (
     <Card sx={{ borderRadius: 2, boxShadow: 1, mt: 4 }}>
       <CardContent sx={{ p: 4 }}>
         <Typography variant="subtitle1" sx={{ mb: 3, fontWeight: 600, color: "#333" }}>
-          Q10: Student Performance Comparison (Height vs Weight vs Score)
+          Q10: Scatter Chart
         </Typography>
         <Typography variant="body2" sx={{ mb: 4, color: "#555" }}>
-          Bubble size represents <strong>Score (z)</strong> • A School vs B School
+         Use Cases - <strong>Likert Scale 1--5 (Strongly Agree to Disagree)</strong>
         </Typography>
         <Box sx={{ height: 420 }}>
           <ResponsiveContainer width="100%" height="100%">
@@ -564,12 +565,34 @@ const renderBarChart = () => (
                 left: 10,
               }}
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="x" type="number" name="stature" unit="cm" />
-              <YAxis dataKey="y" type="number" name="weight" unit="kg" />
+              <CartesianGrid
+              stroke="#e8e8e8"
+              strokeDasharray="4 4"
+              strokeOpacity={0.7}
+              // These two lines are the magic
+              vertical={true}
+              horizontal={true}
+              fill="none"
+            />
+              {/* <XAxis dataKey="x" type="number" name="stature" unit="cm" /> */}
+              <XAxis
+              dataKey="x"
+              type="number"
+              tick={false}  
+              axisLine={{ stroke: "#ddd" }}
+              tickLine={false}
+            />
+              {/* <YAxis dataKey="y" type="number" name="weight" unit="kg" /> */}
+              <YAxis
+              dataKey="y"
+              type="number"
+              tick={false} 
+              axisLine={{ stroke: "#ddd" }}
+              tickLine={false}
+            />
               <ZAxis dataKey="z" type="number" range={[64, 144]} name="score" unit="km" />
-              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-              <Legend />
+              <Tooltip cursor={{ strokeDasharray: '3 3' }} /> 
+              {/* <Legend /> */}
               <Scatter name="A school" data={scatterData01} fill="#8884d8" />
               <Scatter name="B school" data={scatterData02} fill="#82ca9d" />
             </ScatterChart>
@@ -583,21 +606,21 @@ const renderBarChart = () => (
   <Card sx={{ borderRadius: 2, boxShadow: 3, mt: 4, overflow: "hidden" }}>
     <CardContent sx={{ p: 5, bgcolor: "#fafafa" }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "#1a3e72" }}>
-        Q11: Product & Service Excellence Benchmark
+        Q11: Radar Chart
       </Typography>
-      <Typography variant="body2" sx={{ mb: 4, color: "#555", fontStyle: "italic" }}>
-        Comparison against industry average (out of 100)
+      <Typography variant="body2" sx={{ mb: 4, color: "#555" }}>
+        Use Cases - <strong>Key Performance Indicator (KPI) </strong>
       </Typography>
       <Box sx={{ height: 520 }}>
         <ResponsiveContainer width="100%" height="100%">
           <RadarChart data={radarData}>
             <PolarGrid stroke="#ccc" />
-            <PolarAngleAxis dataKey="subject" tick={{ fontSize: 13 }} />
-            <PolarRadiusAxis angle={90} domain={[0, 100]} />
+            {/* <PolarAngleAxis dataKey="subject" tick={{ fontSize: 13 }} />
+            <PolarRadiusAxis angle={90} domain={[0, 100]} /> */}
             <Radar name="Our Company" dataKey="company" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.7} strokeWidth={3} />
             <Radar name="Industry Avg" dataKey="industry" stroke="#10b981" fill="#10b981" fillOpacity={0.4} strokeDasharray="5 5" />
             <Tooltip formatter={(v: number) => `${v}/100`} />
-            <Legend />
+            {/* <Legend /> */}
           </RadarChart>
         </ResponsiveContainer>
       </Box>
@@ -609,19 +632,19 @@ const renderDottedLineChart = () => (
   <Card sx={{ borderRadius: 2, boxShadow: 3, mt: 4, overflow: "hidden" }}>
     <CardContent sx={{ p: 5, bgcolor: "#fafafa" }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "#1a3e72" }}>
-        Q12: User Engagement Trend (Custom Dots)
+        Q12: Dotted Line Chart
       </Typography>
       <Typography variant="body2" sx={{ mb: 4, color: "#555" }}>
-        Red = High Activity (2500) • Green = Normal Activity
+        Use Cases - <strong>Likert Scale 1--5 (Strongly Agree to Disagree)</strong>
       </Typography>
       <Box sx={{ height: 500 }}>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={dottedLineData} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-            <XAxis dataKey="name" tick={{ fill: "#555" }} />
-            <YAxis tick={{ fill: "#555" }} />
+            {/* <XAxis dataKey="name" tick={{ fill: "#555" }} />
+            <YAxis tick={{ fill: "#555" }} /> */}
             <Tooltip />
-            <Legend />
+            {/* <Legend /> */}
             <Line
               type="monotone"
               dataKey="pv"
@@ -649,10 +672,10 @@ const renderHeatMapChart = () => (
   <Card sx={{ borderRadius: 2, boxShadow: 3, mt: 4, overflow: "hidden" }}>
     <CardContent sx={{ p: 5, bgcolor: "#fafafa" }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "#1a3e72" }}>
-        Q13: Satisfaction × Agreement Level Heatmap
+        Q13: Heatmap
       </Typography>
-      <Typography variant="body2" sx={{ mb: 4, color: "#555", fontStyle: "italic" }}>
-        Cross-tabulation of overall satisfaction vs agreement level
+      <Typography variant="body2" sx={{ mb: 4, color: "#555"}}>
+       Use Cases - <strong>Likert Scale 1--5 (Strongly Agree to Disagree), Ranking Questions</strong>
       </Typography>
       <Box sx={{ height: 620, bgcolor: "white", borderRadius: 2 }}>
         <ResponsiveHeatMap
@@ -694,29 +717,29 @@ const renderLineChartNivo = () => (
   <Card sx={{ borderRadius: 2, boxShadow: 3, mt: 4, overflow: "hidden" }}>
     <CardContent sx={{ p: 5, bgcolor: "#fafafa" }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "#1a3e72" }}>
-        Q14: Traffic Sources Trend (Last 6 Months)
+        Q14: Trend Line Chart
       </Typography>
-      <Typography variant="body2" sx={{ mb: 4, color: "#555", fontStyle: "italic" }}>
-        Desktop vs Mobile vs Tablet users over time
+      <Typography variant="body2" sx={{ mb: 4, color: "#555" }}>
+        Use Cases - <strong>Rating Questions</strong>
       </Typography>
       <Box sx={{ height: 520 }}>
         <ResponsiveLine
           data={lineChartNivoData}
-          margin={{ top: 60, right: 140, bottom: 80, left: 80 }}
-          xScale={{ type: 'point' }}
-          yScale={{ type: 'linear', min: 0, max: 'auto', stacked: false }}
-          axisTop={null}
-          axisRight={null}
-          axisBottom={{
-            legend: 'Month',
-            legendOffset: 46,
-            legendPosition: 'middle'
-          }}
-          axisLeft={{
-            legend: 'Number of Users',
-            legendOffset: -60,
-            legendPosition: 'middle'
-          }}
+          // margin={{ top: 60, right: 140, bottom: 80, left: 80 }}
+          // xScale={{ type: 'point' }}
+          // yScale={{ type: 'linear', min: 0, max: 'auto', stacked: false }}
+            // axisTop={null}
+            // axisRight={null}
+            // axisBottom={{
+            //   legend: 'Month',
+            //   legendOffset: 46,
+            //   legendPosition: 'middle'
+            // }}
+            // axisLeft={{
+            //   legend: 'Number of Users',
+            //   legendOffset: -60,
+            //   legendPosition: 'middle'
+            // }}
           colors={{ datum: 'color' }}
           pointSize={12}
           pointColor={{ theme: 'background' }}
@@ -730,30 +753,30 @@ const renderLineChartNivo = () => (
           crosshairType="x"
           animate={true}
           motionConfig="gentle"
-          legends={[
-            {
-              anchor: 'bottom-right',
-              direction: 'column',
-              justify: false,
-              translateX: 120,
-              translateY: 0,
-              itemsSpacing: 8,
-              itemDirection: 'left-to-right',
-              itemWidth: 100,
-              itemHeight: 24,
-              itemOpacity: 0.85,
-              symbolSize: 14,
-              symbolShape: 'circle',
-              effects: [
-                {
-                  on: 'hover',
-                  style: {
-                    itemOpacity: 1
-                  }
-                }
-              ]
-            }
-          ]}
+          // legends={[
+          //   {
+          //     anchor: 'bottom-right',
+          //     direction: 'column',
+          //     justify: false,
+          //     translateX: 120,
+          //     translateY: 0,
+          //     itemsSpacing: 8,
+          //     itemDirection: 'left-to-right',
+          //     itemWidth: 100,
+          //     itemHeight: 24,
+          //     itemOpacity: 0.85,
+          //     symbolSize: 14,
+          //     symbolShape: 'circle',
+          //     effects: [
+          //       {
+          //         on: 'hover',
+          //         style: {
+          //           itemOpacity: 1
+          //         }
+          //       }
+          //     ]
+          //   }
+          // ]}
         />
       </Box>
     </CardContent>
@@ -773,28 +796,35 @@ const wordCloudColors = [
 const resolveFill = (_word: any, index: number) =>
   wordCloudColors[index % wordCloudColors.length];
 
-const fixedRotation = (_word: any, _index: number) => 0;
+// const fixedRotation = (_word: any, _index: number) => 0;
+const rotate = (word: any) => {
+  // 70% chance horizontal (0°), 15% -45°, 15% +45°
+  const rand = Math.random();
+  if (rand < 0.7) return 0;
+  if (rand < 0.85) return -45;
+  return 45;
+};
 
 const renderWordCloud = () => (
   <Card sx={{ borderRadius: 2, boxShadow: 3, mt: 4, overflow: "hidden" }}>
     <CardContent sx={{ p: 5, bgcolor: "#fafafa" }}>
       <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: "#1a3e72" }}>
-        Q15: Most Frequent Words in Customer Feedback
+        Q15: WordCloud
       </Typography>
-      <Typography variant="body2" sx={{ mb: 4, color: "#555", fontStyle: "italic" }}>
-        Based on 1,247 open-ended responses (larger = more frequent)
+      <Typography variant="body2" sx={{ mb: 4, color: "#555" }}>
+        Use Cases - <strong>Open Ended/Text</strong>
       </Typography>
       <Box sx={{ width: '100%', height: 520, bgcolor: "white", borderRadius: 2, p: 4 }}>
        <WordCloud
        words={wordCloudData}
        width={800}
-       height={500}
+       height={500} 
        font="Roboto, sans-serif"
        fontWeight="bold"
        fontSize={(word) => Math.log(word.value + 1) * 15 + 20}
        fill={resolveFill}
        padding={2}
-       rotate={fixedRotation}
+       rotate={rotate}
        spiral="archimedean"
        onWordClick={(word) => alert(`"${word.text}" mentioned ${word.value} times`)}
 />
