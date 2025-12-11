@@ -1284,7 +1284,7 @@ const renderQuestion = (q: Question) => {
           {[
             { title: "TOTAL", value: stats.total, bg: "#2196F3" },
             { title: "NOT STARTED", value: stats.notStarted, bg: "#757575" },
-            { title: "PARTIALLY COMPLETED", value: stats.partiallyCompleted, bg: "#FFEB3B", color: "#000" },
+            { title: "PARTIALLY COMPLETED", value: stats.partiallyCompleted, bg: "#FFEB3B", color: "white" },
             { title: "COMPLETED", value: stats.completed, bg: "#4CAF50" },
           ].map((card, i) => (
             <Box
